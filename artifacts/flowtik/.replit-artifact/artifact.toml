@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "FlowTik"
+description = "A mobile-first browser video editor and compressor that processes videos locally with WebAssembly and exports optimized files without uploading them."
+version = "1.0.0"
+id = "artifacts/flowtik"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25532
+
+[services.development]
+run = "pnpm --filter @workspace/flowtik run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/flowtik", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/flowtik/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25532"
+BASE_PATH = "/"
